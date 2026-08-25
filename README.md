@@ -1,10 +1,29 @@
-# Atomic
+# ⚡ Xiting.Atomic
+
+NuGet Gallery: [Xiting.Atomic](https://www.nuget.org/packages/Xiting.Atomic/)
+
+一个基于 **Interlocked** 的无锁原子操作库，提供枚举与 primitive 类型的原子读写和基于自旋的比较-交换 (CAS) 操作，使用 **.NET 10.0** 构建。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![.NET 10.0](https://img.shields.io/badge/.NET-10.0-512BD4.svg)](https://dotnet.microsoft.com/)
+[![NuGet](https://img.shields.io/nuget/v/Xiting.Atomic.svg)](https://www.nuget.org/packages/Xiting.Atomic)
 [![CI](https://github.com/xiting910/Atomic/actions/workflows/ci.yml/badge.svg)](https://github.com/xiting910/Atomic/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/xiting910/Atomic/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/xiting910/Atomic/actions/workflows/codeql-analysis.yml)
 [![Dependency Review](https://github.com/xiting910/Atomic/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/xiting910/Atomic/actions/workflows/dependency-review.yml)
+
+---
+
+## ✨ 特性
+
+- ⚡ **无锁实现** — 基于 `Interlocked` 与 `Volatile`，不依赖 `lock`
+- 🔢 **AtomicOperation 静态类** — `SpinPredicateAndSet` 自旋条件交换，支持 byte/sbyte/short/ushort/int/uint/long/ulong 及泛型（引用类型、primitive、枚举）重载，竞态时自动自旋重试
+- 📌 **AtomicEnum\<TEnum\> 结构体** — 枚举的原子读写、`CompareAndSet`、`PredicateAndSet`、`SpinPredicateAndSet` 操作，与 `TEnum` 隐式互转并支持 `==`/`!=` 比较
+- 📋 **AtomicOperationResult 枚举** — 原子操作结果（`AlreadySet`/`PredicateFailed`/`RaceCondition`/`Success`）
+- 📦 **NuGet 发布** — 推 `v*` tag 自动构建、测试，并通过 Trusted Publishing (OIDC) 发布到 [nuget.org](https://www.nuget.org/packages/Xiting.Atomic)
+- 🔒 **API 契约固定** — PublicAPI 分析器 + PackageValidation 基线对比，防止意外破坏公共 API
+- 🧪 **完善的单元测试** — xUnit v3 + Moq + coverlet，覆盖常规与并发场景
+- 🔁 **CI/CD 自动化** — GitHub Actions 自动构建、测试、CodeQL 安全分析、Release 发布
+- 📦 **依赖自动更新** — Dependabot 分组策略，保持依赖最新
 
 ---
 
@@ -50,6 +69,7 @@ Atomic/
 ├── global.json                                     #   测试平台运行器配置 (Microsoft.Testing.Platform)
 ├── LICENSE                                         #   MIT 许可证
 ├── README.md                                       #   本文档
+├── TagPush.bat                                     #   打 tag 并推送发布脚本
 └── Atomic.slnx                                     #   解决方案文件 (.NET XML 格式)
 ```
 
@@ -61,11 +81,16 @@ Atomic/
 
 - [.NET 10.0 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
 
+### 安装
+
+```bash
+dotnet add package Xiting.Atomic
+```
+
 ### 克隆
 
 ```bash
 git clone https://github.com/xiting910/Atomic.git
-cd Atomic
 ```
 
 ### 构建

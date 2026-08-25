@@ -15,6 +15,7 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EnablePackageValidation>true</EnablePackageValidation>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageValidationBaselineVersion>1.0.0</PackageValidationBaselineVersion>
   </PropertyGroup>
 
   <ItemGroup>
