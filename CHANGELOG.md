@@ -19,5 +19,14 @@
   - 单元测试与并发测试项目 (xunit.v3)
   - 项目基础设施: CI/CodeQL/Dependabot 工作流、Issue/PR 模板、.editorconfig、.gitattributes、
     .gitignore、MIT 许可证、README 与 CHANGELOG
+- 添加 NuGet 打包发布支持:
+  - <code>Xiting.Atomic.csproj</code> 打包元数据: PackageId/Authors/Description/MIT 许可证/仓库地址/
+    标签/包内 README/符号包
+  - <code>release-publish.yml</code> 发布工作流: 推 <code>v*</code> tag 自动测试、打包,
+    通过 Trusted Publishing (OIDC) 发布 NuGet 包并创建 GitHub Release
+  - 包内 README (<code>Xiting.Atomic/README.md</code>), 供 nuget.org 包页面展示
+  - <code>PublicAPI.Shipped.txt</code>/<code>PublicAPI.Unshipped.txt</code> 固定公共 API 契约
+  - <code>Microsoft.CodeAnalysis.PublicApiAnalyzers</code> 与 <code>Microsoft.SourceLink.GitHub</code>
+  - <code>EnablePackageValidation</code> 包验证与 <code>Deterministic</code> 确定性构建
 
 [Unreleased]: https://github.com/xiting910/Atomic/commits/main

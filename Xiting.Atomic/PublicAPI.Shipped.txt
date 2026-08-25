@@ -1,0 +1,51 @@
+#nullable enable
+
+Xiting.Atomic.AtomicOperation
+Xiting.Atomic.AtomicOperationResult.PredicateFailed = 1 -> Xiting.Atomic.AtomicOperationResult
+Xiting.Atomic.AtomicOperationResult.RaceCondition = 2 -> Xiting.Atomic.AtomicOperationResult
+Xiting.Atomic.AtomicOperationResult.Success = 3 -> Xiting.Atomic.AtomicOperationResult
+Xiting.Atomic.AtomicOperationResult
+Xiting.Atomic.AtomicOperationResult.AlreadySet = 0 -> Xiting.Atomic.AtomicOperationResult
+Xiting.Atomic.AtomicEnum<TEnum>
+Xiting.Atomic.AtomicEnum<TEnum>.AtomicEnum() -> void
+Xiting.Atomic.AtomicEnum<TEnum>.Value.get -> TEnum
+static Xiting.Atomic.AtomicOperation.SpinPredicateAndSet(ref byte target, System.Func<byte, bool>! predicate, byte newValue) -> bool
+Xiting.Atomic.AtomicEnum<TEnum>.Value.set -> void
+static Xiting.Atomic.AtomicOperation.SpinPredicateAndSet(ref byte target, System.Func<byte, bool>! predicate, System.Func<byte, byte>! newValueFactory) -> bool
+static Xiting.Atomic.AtomicOperation.SpinPredicateAndSet(ref sbyte target, System.Func<sbyte, bool>! predicate, sbyte newValue) -> bool
+static Xiting.Atomic.AtomicOperation.SpinPredicateAndSet(ref sbyte target, System.Func<sbyte, bool>! predicate, System.Func<sbyte, sbyte>! newValueFactory) -> bool
+Xiting.Atomic.AtomicEnum<TEnum>.AtomicEnum(TEnum initialValue) -> void
+static Xiting.Atomic.AtomicOperation.SpinPredicateAndSet(ref short target, System.Func<short, bool>! predicate, short newValue) -> bool
+static Xiting.Atomic.AtomicOperation.SpinPredicateAndSet(ref short target, System.Func<short, bool>! predicate, System.Func<short, short>! newValueFactory) -> bool
+Xiting.Atomic.AtomicEnum<TEnum>.AtomicEnum(Xiting.Atomic.AtomicEnum<TEnum> atomicEnum) -> void
+static Xiting.Atomic.AtomicOperation.SpinPredicateAndSet(ref ushort target, System.Func<ushort, bool>! predicate, ushort newValue) -> bool
+static Xiting.Atomic.AtomicOperation.SpinPredicateAndSet(ref ushort target, System.Func<ushort, bool>! predicate, System.Func<ushort, ushort>! newValueFactory) -> bool
+Xiting.Atomic.AtomicEnum<TEnum>.Set(TEnum newValue, out TEnum originalValue) -> bool
+static Xiting.Atomic.AtomicOperation.SpinPredicateAndSet(ref int target, System.Func<int, bool>! predicate, int newValue) -> bool
+Xiting.Atomic.AtomicEnum<TEnum>.CompareAndSet(TEnum comparisonValue, TEnum newValue, out TEnum originalValue) -> bool
+static Xiting.Atomic.AtomicOperation.SpinPredicateAndSet(ref int target, System.Func<int, bool>! predicate, System.Func<int, int>! newValueFactory) -> bool
+Xiting.Atomic.AtomicEnum<TEnum>.PredicateAndSet(System.Func<TEnum, bool>! predicate, TEnum newValue, out TEnum originalValue) -> Xiting.Atomic.AtomicOperationResult
+static Xiting.Atomic.AtomicOperation.SpinPredicateAndSet(ref uint target, System.Func<uint, bool>! predicate, uint newValue) -> bool
+Xiting.Atomic.AtomicEnum<TEnum>.PredicateAndSet(System.Func<TEnum, bool>! predicate, System.Func<TEnum, TEnum>! newValueFactory, out TEnum originalValue) -> Xiting.Atomic.AtomicOperationResult
+static Xiting.Atomic.AtomicOperation.SpinPredicateAndSet(ref uint target, System.Func<uint, bool>! predicate, System.Func<uint, uint>! newValueFactory) -> bool
+static Xiting.Atomic.AtomicOperation.SpinPredicateAndSet(ref long target, System.Func<long, bool>! predicate, long newValue) -> bool
+static Xiting.Atomic.AtomicOperation.SpinPredicateAndSet(ref long target, System.Func<long, bool>! predicate, System.Func<long, long>! newValueFactory) -> bool
+static Xiting.Atomic.AtomicOperation.SpinPredicateAndSet(ref ulong target, System.Func<ulong, bool>! predicate, ulong newValue) -> bool
+static Xiting.Atomic.AtomicOperation.SpinPredicateAndSet(ref ulong target, System.Func<ulong, bool>! predicate, System.Func<ulong, ulong>! newValueFactory) -> bool
+static Xiting.Atomic.AtomicOperation.SpinPredicateAndSet<T>(ref T target, System.Func<T, bool>! predicate, T newValue) -> bool
+static Xiting.Atomic.AtomicOperation.SpinPredicateAndSet<T>(ref T target, System.Func<T, bool>! predicate, System.Func<T, T>! newValueFactory) -> bool
+Xiting.Atomic.AtomicEnum<TEnum>.SpinPredicateAndSet(System.Func<TEnum, bool>! predicate, TEnum newValue, out TEnum originalValue) -> bool
+Xiting.Atomic.AtomicEnum<TEnum>.SpinPredicateAndSet(System.Func<TEnum, bool>! predicate, System.Func<TEnum, TEnum>! newValueFactory, out TEnum originalValue, out TEnum finalValue) -> bool
+Xiting.Atomic.AtomicEnum<TEnum>.Equals(Xiting.Atomic.AtomicEnum<TEnum> other) -> bool
+Xiting.Atomic.AtomicEnum<TEnum>.Equals(TEnum other) -> bool
+override Xiting.Atomic.AtomicEnum<TEnum>.Equals(object? obj) -> bool
+override Xiting.Atomic.AtomicEnum<TEnum>.GetHashCode() -> int
+override Xiting.Atomic.AtomicEnum<TEnum>.ToString() -> string!
+static Xiting.Atomic.AtomicEnum<TEnum>.operator ==(Xiting.Atomic.AtomicEnum<TEnum> left, Xiting.Atomic.AtomicEnum<TEnum> right) -> bool
+static Xiting.Atomic.AtomicEnum<TEnum>.operator !=(Xiting.Atomic.AtomicEnum<TEnum> left, Xiting.Atomic.AtomicEnum<TEnum> right) -> bool
+static Xiting.Atomic.AtomicEnum<TEnum>.operator ==(Xiting.Atomic.AtomicEnum<TEnum> left, TEnum right) -> bool
+static Xiting.Atomic.AtomicEnum<TEnum>.operator !=(Xiting.Atomic.AtomicEnum<TEnum> left, TEnum right) -> bool
+static Xiting.Atomic.AtomicEnum<TEnum>.operator ==(TEnum left, Xiting.Atomic.AtomicEnum<TEnum> right) -> bool
+static Xiting.Atomic.AtomicEnum<TEnum>.operator !=(TEnum left, Xiting.Atomic.AtomicEnum<TEnum> right) -> bool
+static Xiting.Atomic.AtomicEnum<TEnum>.implicit operator TEnum(Xiting.Atomic.AtomicEnum<TEnum> atomicEnum) -> TEnum
+static Xiting.Atomic.AtomicEnum<TEnum>.implicit operator Xiting.Atomic.AtomicEnum<TEnum>(TEnum value) -> Xiting.Atomic.AtomicEnum<TEnum>

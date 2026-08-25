@@ -1,0 +1,237 @@
+# =============================================================================
+# Release 发布工作流: 推送 tag 时自动构建、测试、打包, 并发布 NuGet 包与 GitHub Release
+# =============================================================================
+name: Release Publish
+
+# 触发条件: 当推送以 v 开头的 tag 时执行
+on:
+  push:
+    tags: ["v*"]
+
+# 工作流级环境变量, 供所有作业共享
+env:
+  PACKAGE_ID: Xiting.Atomic
+
+# 作业定义: 构建作业、NuGet 发布作业、GitHub Release 作业
+jobs:
+  # 构建作业: 编译、测试、打包产物
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
+
+    steps:
+      # 1. 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # 2. 从 tag 提取版本号
+      - name: Extract version from tag
+        id: version
+        run: |
+          TAG_NAME="${{ github.ref_name }}"
+          VERSION="${TAG_NAME#v}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "📌 Version: $VERSION (tag: $TAG_NAME)"
+
+      # 3. 安装 .NET 10 SDK
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+          cache: true
+          cache-dependency-path: |
+            **/*.csproj
+            **/*.props
+            **/*.slnx
+
+      # 4. 运行全部单元测试
+      - name: Run tests
+        run: dotnet test --solution Atomic.slnx --configuration Release --verbosity normal
+
+      # 5. 以 Release 模式打包, 版本号取自 tag
+      - name: Pack NuGet package
+        run: |
+          dotnet pack Xiting.Atomic/Xiting.Atomic.csproj \
+            --configuration Release \
+            --no-restore \
+            -p:Version="${{ steps.version.outputs.version }}" \
+            -p:ContinuousIntegrationBuild=true \
+            --output ./artifacts
+
+      # 6. 上传构建产物
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: app-package
+          path: artifacts/
+          retention-days: 7
+
+  # NuGet 发布作业: 使用 Trusted Publishing (OIDC) 推送 NuGet 包
+  nuget-publish:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      # 1. 下载构建产物
+      - name: Download build artifacts
+        uses: actions/download-artifact@v7
+        with:
+          name: app-package
+
+      # 2. 安装 .NET 10 SDK
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+          cache: true
+          cache-dependency-path: |
+            **/*.csproj
+            **/*.props
+            **/*.slnx
+
+      # 3. 使用 OIDC 交换临时 API key (Trusted Publishing, 无需长期 secret)
+      - name: NuGet login (OIDC)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      # 4. 推送主包与符号包到 nuget.org, 同版本已存在时跳过
+      - name: Push to NuGet.org
+        run: |
+          dotnet nuget push ./app-package/*.nupkg \
+            --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+          dotnet nuget push ./app-package/*.snupkg \
+            --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+
+  # GitHub Release 作业: 提取变更日志、生成提交记录、创建 GitHub Release
+  github-release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      # 1. 检出代码 (完整历史, 用于生成提交记录)
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      # 2. 从 CHANGELOG.md 提取对应版本条目
+      - name: Extract changelog
+        id: changelog
+        run: |
+          VERSION="${{ needs.build.outputs.version }}"
+          CHANGELOG=$(awk -v ver="$VERSION" '
+          BEGIN { found=0; output="" }
+          $0 ~ "^## \\[" ver "\\]" { found=1; next }
+          found && $0 ~ "^## \\[" { exit }
+          found && $0 ~ "^-+$" { exit }
+          found { output = output $0 "\n" }
+          END { print output }
+          ' CHANGELOG.md)
+
+          if [ -z "$(echo "$CHANGELOG" | tr -d '[:space:]')" ]; then
+            echo "⚠️  No changelog for v$VERSION, using [Unreleased]"
+            CHANGELOG=$(awk '
+              BEGIN { found=0; output="" }
+              $0 ~ "^## \\[Unreleased\\]" { found=1; next }
+              found && $0 ~ "^## \\[" { exit }
+              found && $0 ~ "^-+$" { exit }
+              found { output = output $0 "\n" }
+              END { print output }
+            ' CHANGELOG.md)
+          fi
+
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      # 3. 生成此版本的提交历史与贡献者列表
+      - name: Generate commit history & contributors
+        id: gitinfo
+        run: |
+          PREV_TAG=$(git tag --sort=-creatordate | grep -v "${{ needs.build.outputs.tag }}" | head -1)
+
+          if [ -n "$PREV_TAG" ]; then
+            RANGE="${PREV_TAG}..HEAD"
+            echo "📌 Previous tag: $PREV_TAG"
+          else
+            RANGE="HEAD"
+            echo "📌 No previous tag — first release"
+          fi
+
+          # Commit history (exclude merge commits)
+          COMMITS=$(git log --oneline --no-merges $RANGE | sed 's/^/- /')
+          if [ -z "$COMMITS" ]; then
+            COMMITS="_（无新提交）_"
+          fi
+          {
+            echo "commits<<EOF"
+            echo "$COMMITS"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+          # Contributors (unique authors)
+          CONTRIBS=$(git log --format='- @%an' $RANGE | sort -u)
+          if [ -z "$CONTRIBS" ]; then
+            CONTRIBS="_（无贡献者）_"
+          fi
+          {
+            echo "contributors<<EOF"
+            echo "$CONTRIBS"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+          echo "✅ Commits:"
+          echo "$COMMITS"
+          echo "✅ Contributors:"
+          echo "$CONTRIBS"
+
+      # 4. 创建 GitHub Release
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          name: "v${{ needs.build.outputs.version }} — ${{ env.PACKAGE_ID }}"
+          tag_name: ${{ needs.build.outputs.tag }}
+          body: |
+            ## 🔧 ${{ env.PACKAGE_ID }} v${{ needs.build.outputs.version }}
+
+            ${{ steps.changelog.outputs.changelog }}
+
+            ---
+
+            ### 📝 此版本提交
+
+            ${{ steps.gitinfo.outputs.commits }}
+
+            ---
+
+            ### 🔗 链接
+
+            - [NuGet 包](https://www.nuget.org/packages/${{ env.PACKAGE_ID }}/)
+            - [问题反馈](https://github.com/${{ github.repository }}/issues)
+            - [完整更新日志](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md)
+
+            <details>
+            <summary>Contributors</summary>
+
+            ${{ steps.gitinfo.outputs.contributors }}
+
+            </details>
+          draft: false
+          prerelease: false
+          make_latest: true

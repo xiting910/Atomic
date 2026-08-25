@@ -1,8 +1,31 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Authors>xiting910</Authors>
+    <PackageId>Xiting.Atomic</PackageId>
+    <Description>Lock-free atomic operations for .NET enums and primitives with spin-based CAS</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>atomic;concurrency;interlocked;lock-free</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/xiting910/Atomic</RepositoryUrl>
+    <Deterministic>true</Deterministic>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EnablePackageValidation>true</EnablePackageValidation>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <!-- 固定公共 API (PublicAPI.Shipped.txt/Unshipped.txt) 与 SourceLink 调试支持 -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="all" />
+  </ItemGroup>
 
   <!-- 使内部类型和成员对测试项目可见 -->
   <ItemGroup>
