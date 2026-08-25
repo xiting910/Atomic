@@ -1,0 +1,14 @@
+# 构建产物
+**/bin/
+**/obj/
+
+# IDE & 编辑器
+**/.vs/
+**/.vscode/
+
+# 测试结果
+TestResults/*
+!TestResults/*.trx
+
+# NuGet
+*.nupkg

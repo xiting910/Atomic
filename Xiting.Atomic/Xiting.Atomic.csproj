@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- 使内部类型和成员对测试项目可见 -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="Xiting.Atomic.Tests" />
+  </ItemGroup>
+
+</Project>

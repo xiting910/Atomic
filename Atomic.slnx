@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/others/">
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path="CHANGELOG.md" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="Xiting.Atomic/Xiting.Atomic.csproj" />
+  <Project Path="Xiting.Atomic.Tests/Xiting.Atomic.Tests.csproj" />
+</Solution>
