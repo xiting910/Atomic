@@ -9,6 +9,10 @@
 
 ## [Unreleased]
 
+---
+
+## [1.0.0] - 2026-08-25
+
 ### Added
 
 - 初始提交, 创建 Xiting.Atomic 原子操作库项目, 包含:
@@ -29,4 +33,5 @@
   - <code>Microsoft.CodeAnalysis.PublicApiAnalyzers</code> 与 <code>Microsoft.SourceLink.GitHub</code>
   - <code>EnablePackageValidation</code> 包验证与 <code>Deterministic</code> 确定性构建
 
-[Unreleased]: https://github.com/xiting910/Atomic/commits/main
+[Unreleased]: https://github.com/xiting910/Atomic/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/xiting910/Atomic/releases/tag/v1.0.0

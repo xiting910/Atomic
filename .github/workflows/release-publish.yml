@@ -78,11 +78,12 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      actions: read
 
     steps:
       # 1. 下载构建产物
       - name: Download build artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: app-package
 
@@ -91,13 +92,8 @@ jobs:
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 10.0.x
-          cache: true
-          cache-dependency-path: |
-            **/*.csproj
-            **/*.props
-            **/*.slnx
 
-      # 3. 使用 OIDC 交换临时 API key (Trusted Publishing, 无需长期 secret)
+      # 3. 使用 OIDC 登录 NuGet.org, 获取临时 API Key
       - name: NuGet login (OIDC)
         uses: NuGet/login@v1
         id: login
@@ -107,11 +103,11 @@ jobs:
       # 4. 推送主包与符号包到 nuget.org, 同版本已存在时跳过
       - name: Push to NuGet.org
         run: |
-          dotnet nuget push ./app-package/*.nupkg \
+          dotnet nuget push ./*.nupkg \
             --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
             --source https://api.nuget.org/v3/index.json \
             --skip-duplicate
-          dotnet nuget push ./app-package/*.snupkg \
+          dotnet nuget push ./*.snupkg \
             --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
             --source https://api.nuget.org/v3/index.json \
             --skip-duplicate
