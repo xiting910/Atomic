@@ -13,10 +13,12 @@
 
 - 新增 <code>TagPush.bat</code> 发布脚本: 检查工作区干净状态, 从 <code>CHANGELOG.md</code> 提取最新版本号,
   构建测试通过后创建并推送 <code>v*</code> tag, 触发 GitHub Actions 自动发布
+- <code>README.md</code> 添加 NuGet 下载量徽章
 
 ### Changed
 
 - <code>README.md</code> 更新: 添加 NuGet 徽章、项目简介、特性列表与安装章节, 项目结构补充 <code>TagPush.bat</code>
+- <code>.gitignore</code> 优化 TestResults 忽略规则: 从 <code>TestResults/*</code> 改为 <code>TestResults/</code>
 - <code>Xiting.Atomic.csproj</code> 添加 <code>PackageValidationBaselineVersion</code> (1.0.0) 包验证基线,
   与 v1.0.0 对比防止意外破坏公共 API
 

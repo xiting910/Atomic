@@ -7,7 +7,7 @@
 **/.vscode/
 
 # 测试结果
-TestResults/*
+TestResults/
 !TestResults/*.trx
 
 # NuGet
