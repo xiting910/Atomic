@@ -17,6 +17,7 @@
 
 ### Changed
 
+- <code>.github/dependabot.yml</code> 移除 NuGet 依赖的分组合并更新 (xunit/test-sdk/catchall 三组), 恢复为每个依赖单独 PR
 - <code>README.md</code> 更新: 添加 NuGet 徽章、项目简介、特性列表与安装章节, 项目结构补充 <code>TagPush.bat</code>
 - <code>.gitignore</code> 优化 TestResults 忽略规则: 从 <code>TestResults/*</code> 改为 <code>TestResults/</code>
 - <code>Xiting.Atomic.csproj</code> 添加 <code>PackageValidationBaselineVersion</code> (1.0.0) 包验证基线,

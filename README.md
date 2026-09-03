@@ -24,7 +24,7 @@ NuGet Gallery: [Xiting.Atomic](https://www.nuget.org/packages/Xiting.Atomic/)
 - 🔒 **API 契约固定** — PublicAPI 分析器 + PackageValidation 基线对比，防止意外破坏公共 API
 - 🧪 **完善的单元测试** — xUnit v3 + Moq + coverlet，覆盖常规与并发场景
 - 🔁 **CI/CD 自动化** — GitHub Actions 自动构建、测试、CodeQL 安全分析、Release 发布
-- 📦 **依赖自动更新** — Dependabot 分组策略，保持依赖最新
+- 📦 **依赖自动更新** — Dependabot 自动更新 NuGet 与 Actions 依赖，保持依赖最新
 
 ---
 
@@ -43,7 +43,7 @@ Atomic/
 │   │   ├── dependabot-auto-merge.yml               #       Dependabot PR 自动 approve + squash 合并
 │   │   ├── dependency-review.yml                   #       依赖漏洞审查 (PR 评论区报告)
 │   │   └── release-publish.yml                     #       发布 (推 v* tag 自动发布 NuGet 包与 GitHub Release)
-│   ├── dependabot.yml                              #     Dependabot 依赖更新 (NuGet + Actions 分组策略)
+│   ├── dependabot.yml                              #     Dependabot 依赖更新 (NuGet + Actions)
 │   └── PULL_REQUEST_TEMPLATE.md                    #     PR 描述模板
 ├── Xiting.Atomic/                                  #   原子操作库项目
 │   ├── AtomicEnum.cs                               #     枚举原子操作封装结构体
