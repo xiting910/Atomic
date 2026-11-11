@@ -22,6 +22,8 @@
 - <code>.gitignore</code> 优化 TestResults 忽略规则: 从 <code>TestResults/*</code> 改为 <code>TestResults/</code>
 - <code>Xiting.Atomic.csproj</code> 添加 <code>PackageValidationBaselineVersion</code> (1.0.0) 包验证基线,
   与 v1.0.0 对比防止意外破坏公共 API
+- <code>Xiting.Atomic.csproj</code> 移除 <code>Microsoft.SourceLink.GitHub</code> 包依赖, 改用 .NET SDK 内置
+  SourceLink (SDK 8+ 自带), 包产物与源码链接行为不变, 版本改由构建 SDK 决定
 
 ---
 

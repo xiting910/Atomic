@@ -25,7 +25,6 @@
   <!-- 固定公共 API (PublicAPI.Shipped.txt/Unshipped.txt) 与 SourceLink 调试支持 -->
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- 使内部类型和成员对测试项目可见 -->

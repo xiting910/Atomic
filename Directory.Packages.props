@@ -3,12 +3,11 @@
   <ItemGroup>
     <!-- 发布工具 -->
     <PackageVersion Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="5.6.0" />
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.403" />
 
     <!-- 测试框架 -->
     <PackageVersion Include="coverlet.collector" Version="10.1.0" />
     <PackageVersion Include="Moq" Version="4.21.0" />
-    <PackageVersion Include="xunit.v3" Version="4.0.2" />
+    <PackageVersion Include="xunit.v3" Version="4.0.3" />
   </ItemGroup>
 
 </Project>
